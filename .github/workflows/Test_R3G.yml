@@ -154,7 +154,8 @@ jobs:
       if: steps.organize.outputs.status == 'success' && env.UPLOAD_WETRANSFER == 'true' && !cancelled()
       run: |
         curl -fsSL git.io/file-transfer | sh
-        ./transfer wet -s -p 16 --no-progress $GITHUB_WORKSPACE/openwrt/bin/packages/mipsel_24kc 2>&1 | tee ipk.log
+        zip $GITHUB_WORKSPACE/openwrt/bin/packages/mipsel_24kc/ipk.zip $GITHUB_WORKSPACE/openwrt/bin/packages/mipsel_24kc
+        ./transfer wet -s -p 16 --no-progress $GITHUB_WORKSPACE/openwrt/bin/packages/mipsel_24kc/ipk.zip 2>&1 | tee ipk.log
         echo "::warning file=(ipk)wetransfer.com::$(cat ipk.log | grep https)"
         echo "::set-output name=url::$(cat ipk.log | grep https | cut -f3 -d" ")"
         
